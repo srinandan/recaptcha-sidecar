@@ -1,0 +1,75 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: recaptcha-sidecar
+  labels:
+    app: recaptcha-sidecar
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: recaptcha-sidecar
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: recaptcha-sidecar
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: recaptcha-sidecar
+        version: v1
+    spec:
+      containers:
+      - image: gcr.io/nandanks-151422/recaptcha-sidecar
+        imagePullPolicy: Always
+        name: recaptcha-sidecar
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5        
+        resources:
+          requests:
+            cpu: 250m
+        env:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /etc/secret/client_secret.json #ensure the file name matches the kubectl secret
+          - name: DEBUG
+            value: "false" #set to true to enable debug
+          - name: PROJECT_NUMBER
+            value: "xx"
+          - name: SITE_KEY
+            value: "xx"                                                                        
+        volumeMounts:
+          - mountPath: /etc/secret
+            name: svc-account-volume
+            readOnly: true
+      volumes:
+      - name: svc-account-volume
+        secret:
+          defaultMode: 420
+          secretName: recaptcha-sidecar-svc-account
+      nodeSelector:
+        cloud.google.com/gke-nodepool: apps                          
+---
