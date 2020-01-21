@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="Call-Recaptcha">
+    <DisplayName>Call Recaptcha</DisplayName>
+    <Properties/>
+    <Request clearPayload="true">
+        <Set>
+            <Headers>
+                <Header name="Accept">application/json</Header>
+            </Headers>
+            <Verb>GET</Verb>
+            <Path>{recaptchaToken}</Path>
+        </Set>
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    </Request>
+    <Response>recaptchaResponse</Response>
+    <HTTPTargetConnection>
+        <Properties/>
+        <URL>http://recaptcha-sidecar.apps.svc.cluster.local:8080/assessment</URL>
+    </HTTPTargetConnection>
+</ServiceCallout>

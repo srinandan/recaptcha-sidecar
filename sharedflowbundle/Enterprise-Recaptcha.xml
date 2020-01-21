@@ -1,0 +1,17 @@
+<SharedFlowBundle revision="1" name="Enterprise-Recaptcha">
+    <DisplayName></DisplayName>
+    <Description></Description>
+    <CreatedAt>1579484508774</CreatedAt>
+    <LastModifiedAt>1579492669411</LastModifiedAt>
+    <Policies>
+        <Policy>Call-Recaptcha</Policy>
+        <Policy>Recaptcha-Response</Policy>
+    </Policies>
+    <Resources>
+        <Resource>jsc://recaptchaResponse.js</Resource>
+    </Resources>
+    <SharedFlows>
+        <SharedFlow>default</SharedFlow>
+    </SharedFlows>
+    <subType>SharedFlow</subType>
+</SharedFlowBundle>
