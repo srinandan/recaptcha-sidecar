@@ -18,9 +18,9 @@ metadata:
   name: recaptcha-sidecar
 build:
   googleCloudBuild:
-    projectId: nandanks-151422
+    projectId: srinandans-apigee
   artifacts:
-  - image: gcr.io/nandanks-151422/recaptcha-sidecar
+  - image: gcr.io/srinandans-apigee/recaptcha-sidecar
 deploy:
   kubectl:
     flags:
